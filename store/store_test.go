@@ -201,7 +201,7 @@ func getRandomBlock(height uint64, nTxs int) *types.Block {
 				BaseHeader: types.BaseHeader{
 					Height: height,
 				},
-				AggregatorsHash: make([]byte, 32),
+				AggregatorsHash:     make([]byte, 32),
 				NextAggregatorsHash: make([]byte, 32),
 			}},
 		Data: types.Data{

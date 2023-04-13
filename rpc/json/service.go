@@ -11,13 +11,14 @@ import (
 	"github.com/gorilla/rpc/v2/json2"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
 	ctypes "github.com/tendermint/tendermint/rpc/core/types"
+	tmconfig "github.com/tendermint/tendermint/config"
 
 	"github.com/rollkit/rollkit/log"
 )
 
 // GetHTTPHandler returns handler configured to serve Tendermint-compatible RPC.
-func GetHTTPHandler(l rpcclient.Client, logger log.Logger) (http.Handler, error) {
-	return newHandler(newService(l, logger), json2.NewCodec(), logger), nil
+func GetHTTPHandler(l rpcclient.Client, logger log.Logger, config *tmconfig.RPCConfig) (http.Handler, error) {
+	return newHandler(newService(l, logger), json2.NewCodec(), logger, config), nil
 }
 
 type method struct {

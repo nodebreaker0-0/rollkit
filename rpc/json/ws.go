@@ -33,6 +33,29 @@ func (wsc *wsConn) sendLoop() {
 	}
 }
 
+func CheckOrigin(r *http.Request, allowedOrigins []string) bool {
+	origin := r.Header.Get("Origin")
+	if origin == "" {
+		return true
+	}
+
+	if len(allowedOrigins) > 0 && allowedOrigins[0] == "*" {
+		return true
+	}
+	for _, allowed := range allowedOrigins {
+		if allowed == origin {
+			return true
+		}
+	}
+	return false
+}
+
+func OriginChecker(allowedOrigins []string) func(*http.Request) bool {
+	return func(r *http.Request) bool {
+		return CheckOrigin(r, allowedOrigins)
+	}
+}
+
 func (h *handler) wsHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO(tzdybal): configuration options
 	upgrader := websocket.Upgrader{
@@ -40,6 +63,10 @@ func (h *handler) wsHandler(w http.ResponseWriter, r *http.Request) {
 		WriteBufferSize: 1024,
 	}
 
+	// TODO: use CORSAllowedMethods, CORSAllowedHeaders
+	if h.config != nil {
+		upgrader.CheckOrigin = OriginChecker(h.config.CORSAllowedOrigins)
+	}
 	wsc, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		h.logger.Error("failed to update to WebSocket connection", "error", err)

@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	tmjson "github.com/tendermint/tendermint/libs/json"
+	tmconfig "github.com/tendermint/tendermint/config"
 
 	"github.com/gorilla/rpc/v2"
 	"github.com/gorilla/rpc/v2/json2"
@@ -23,15 +24,17 @@ type handler struct {
 	mux    *http.ServeMux
 	codec  rpc.Codec
 	logger log.Logger
+	config *tmconfig.RPCConfig
 }
 
-func newHandler(s *service, codec rpc.Codec, logger log.Logger) *handler {
+func newHandler(s *service, codec rpc.Codec, logger log.Logger, config *tmconfig.RPCConfig) *handler {
 	mux := http.NewServeMux()
 	h := &handler{
 		srv:    s,
 		mux:    mux,
 		codec:  codec,
 		logger: logger,
+		config: config,
 	}
 
 	mux.HandleFunc("/", h.serveJSONRPC)

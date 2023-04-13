@@ -38,7 +38,7 @@ func TestHandlerMapping(t *testing.T) {
 	require := require.New(t)
 
 	_, local := getRPC(t)
-	handler, err := GetHTTPHandler(local, log.TestingLogger())
+	handler, err := GetHTTPHandler(local, log.TestingLogger(), nil)
 	require.NoError(err)
 
 	jsonReq, err := json2.EncodeClientRequest("health", &healthArgs{})
@@ -87,7 +87,7 @@ func TestREST(t *testing.T) {
 	}
 
 	_, local := getRPC(t)
-	handler, err := GetHTTPHandler(local, log.TestingLogger())
+	handler, err := GetHTTPHandler(local, log.TestingLogger(), nil)
 	require.NoError(err)
 
 	for _, c := range cases {
@@ -118,7 +118,7 @@ func TestEmptyRequest(t *testing.T) {
 	require := require.New(t)
 
 	_, local := getRPC(t)
-	handler, err := GetHTTPHandler(local, log.TestingLogger())
+	handler, err := GetHTTPHandler(local, log.TestingLogger(), nil)
 	require.NoError(err)
 
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -133,7 +133,7 @@ func TestStringyRequest(t *testing.T) {
 	require := require.New(t)
 
 	_, local := getRPC(t)
-	handler, err := GetHTTPHandler(local, log.TestingLogger())
+	handler, err := GetHTTPHandler(local, log.TestingLogger(), nil)
 	require.NoError(err)
 
 	// `starport chain faucet ...` generates broken JSON (ints are "quoted" as strings)
@@ -187,7 +187,7 @@ func TestSubscription(t *testing.T) {
 	require.NotEmpty(unsubscribeAllReq)
 
 	_, local := getRPC(t)
-	handler, err := GetHTTPHandler(local, log.TestingLogger())
+	handler, err := GetHTTPHandler(local, log.TestingLogger(), nil)
 	require.NoError(err)
 
 	var (

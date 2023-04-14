@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/gorilla/rpc/v2/json2"
+	tmconfig "github.com/tendermint/tendermint/config"
 	rpcclient "github.com/tendermint/tendermint/rpc/client"
 	ctypes "github.com/tendermint/tendermint/rpc/core/types"
-	tmconfig "github.com/tendermint/tendermint/config"
 
 	"github.com/rollkit/rollkit/log"
 )

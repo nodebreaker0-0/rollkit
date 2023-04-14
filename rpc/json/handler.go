@@ -10,8 +10,8 @@ import (
 	"reflect"
 	"strconv"
 
-	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmconfig "github.com/tendermint/tendermint/config"
+	tmjson "github.com/tendermint/tendermint/libs/json"
 
 	"github.com/gorilla/rpc/v2"
 	"github.com/gorilla/rpc/v2/json2"

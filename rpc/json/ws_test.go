@@ -13,6 +13,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	tmconfig "github.com/tendermint/tendermint/config"
 	"github.com/tendermint/tendermint/libs/log"
 	tmtypes "github.com/tendermint/tendermint/types"
 )
@@ -22,7 +23,9 @@ func TestWebSockets(t *testing.T) {
 	require := require.New(t)
 
 	_, local := getRPC(t)
-	handler, err := GetHTTPHandler(local, log.TestingLogger(), nil)
+	handler, err := GetHTTPHandler(local, log.TestingLogger(), &tmconfig.RPCConfig{
+		CORSAllowedOrigins: []string{"*"},
+	})
 	require.NoError(err)
 
 	srv := httptest.NewServer(handler)

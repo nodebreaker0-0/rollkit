@@ -131,9 +131,7 @@ func (e *BlockExecutor) CreateBlock(height uint64, lastCommit *types.Commit, las
 	block.SignedHeader.Header.LastCommitHash = e.getLastCommitHash(lastCommit, &block.SignedHeader.Header)
 	block.SignedHeader.Header.LastHeaderHash = lastHeaderHash
 	block.SignedHeader.Header.AggregatorsHash = state.Validators.Hash()
-	if state.NextValidators != nil {
-		block.SignedHeader.Header.NextAggregatorsHash = state.NextValidators.Hash()
-	}
+	block.SignedHeader.Header.NextAggregatorsHash = state.NextValidators.Hash()
 
 	return block
 }

@@ -55,6 +55,7 @@ func doTestCreateBlock(t *testing.T, fraudProofsEnabled bool) {
 		},
 	}
 	state.Validators = tmtypes.NewValidatorSet(validators)
+	state.NextValidators = tmtypes.NewValidatorSet(validators)
 
 	// empty block
 	block := executor.CreateBlock(1, &types.Commit{}, []byte{}, state)

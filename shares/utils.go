@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 
+	"github.com/rollkit/rollkit/appconsts"
+	appns "github.com/rollkit/rollkit/namespace"
 	coretypes "github.com/tendermint/tendermint/types"
 )
 
@@ -95,4 +97,22 @@ func ParseDelimiter(input []byte) (inputWithoutLenDelimiter []byte, unitLen uint
 
 	// return the input without the length delimiter
 	return input[n:], dataLen, nil
+}
+
+func SplitTxs(txs coretypes.Txs) (txShares []Share, err error) {
+	txWriter := NewCompactShareSplitter(appns.TxNamespace, appconsts.ShareVersionZero)
+
+	for _, tx := range txs {
+		err = txWriter.WriteTx(tx)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	txShares, _, err = txWriter.Export(0)
+	if err != nil {
+		return nil, err
+	}
+
+	return txShares, nil
 }

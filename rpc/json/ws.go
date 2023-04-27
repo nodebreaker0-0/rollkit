@@ -36,6 +36,18 @@ func (wsc *wsConn) sendLoop() {
 func (h *handler) wsHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO(tzdybal): configuration options
 	upgrader := websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			// TODO ???
+			//
+			// The default behaviour would be relevant to browser-based clients,
+			// afaik. I suppose having a pass-through is a workaround for allowing
+			// for more complex security schemes, shifting the burden of
+			// AuthN/AuthZ outside the Tendermint RPC.
+			// I can't think of other uses right now that would warrant a TODO
+			// though. The real backstory of this TODO shall remain shrouded in
+			// mystery
+			return true
+		},
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
